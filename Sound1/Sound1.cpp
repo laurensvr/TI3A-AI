@@ -10,12 +10,10 @@ class Tone {
 public:
 	double frequency;
 	std::string name;
-	int number;	
-	void set(double a, std::string b, int c)
+	void set(double a, std::string b)
 	{
 		frequency = a;
 		name = b;
-		number = c;
 	}
 };
 
@@ -24,9 +22,10 @@ public:
 int main() {
 	
 	//TODO: Fill in these keys 1-88
-	Tone key[84];
-	key[1].set(27.5000, "A0", 0);
-
+	Tone key[88];
+	key[1].set(27.5000, "A0");
+	key[2].set(29.1352, "As0");
+	
 	const unsigned SAMPLES = 0.25 * 44100; //Zetten naar de kleinste kortste noot.
 	const unsigned SAMPLE_RATE = 44100;
 	const unsigned AMPLITUDE = 6000;

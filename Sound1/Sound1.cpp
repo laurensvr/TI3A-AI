@@ -16,6 +16,9 @@ public:
 		name = a;
 		frequency = b;
 	}
+	double getFrequency(){
+		return frequency;
+	}
 };
 
 class Chord 
@@ -35,80 +38,136 @@ public:
 	}
 };
 
+class rawGenerator
+{
+private:
+	const unsigned SAMPLES = 0.50 * 44100; //Zetten naar de kleinste kortste noot.
+	const unsigned SAMPLE_RATE = 44100;
+	const unsigned AMPLITUDE = 6000;
+	const double TWO_PI = 6.28318;
+public:
+	int sw = 0;
+	sf::Int16 waveOut1[44100/2];
+	sf::Int16 waveOut2[44100 / 2];
+
+	void in(Tone, Tone, Tone);
+	void in(Tone, Tone);
+	void in(Tone);
+	void in(Chord, Tone);
+	void playStream();
+};
+void rawGenerator::playStream()
+{
+	sf::SoundBuffer Buffer;
+	sf::Sound Sound;
+
+	if (sw == 0){
+		if (!Buffer.loadFromSamples(waveOut1, 0.50 * 44100, 1, 44100)) {
+			std::cerr << "Loading failed!" << std::endl;
+			//return 1;
+		}
+		std::cout << "Sound 1" << std::endl;
+		sw = 1;
+	}
+	else
+	{
+		if (!Buffer.loadFromSamples(waveOut2, 0.50 * 44100, 1, 44100)) {
+			std::cerr << "Loading failed!" << std::endl;
+			//return 1;
+		}
+		std::cout << "Sound 2" << std::endl;
+		sw = 0;
+	}
+
+	Sound.setBuffer(Buffer);
+	//Sound.setLoop(true);
+	Sound.play();
+	sf::sleep(sf::milliseconds(500));
+	Sound.stop();
+
+}
+void rawGenerator::in(Tone a, Tone b, Tone c)
+{
+	double x = 0, y = 0, z = 0;
+	const double increment1 = (a.getFrequency() / SAMPLE_RATE);
+	const double increment2 = (b.getFrequency() / SAMPLE_RATE);
+	const double increment3 = (c.getFrequency() / SAMPLE_RATE);
+
+	cout << "Creating a mix of: " << a.getFrequency() << " + " << b.getFrequency() << " + " << c.getFrequency() << endl;
+	cout << "Creating a mix of: " << increment1 << " + " << increment2 << " + " << increment3 << endl;
+	cout << "Samples:     " << SAMPLES << endl;
+	cout << "Sample rate: " << SAMPLE_RATE << endl;
+
+	for (unsigned i = 0; i < SAMPLES; i++)
+	{
+		waveOut1[i] = (sin(x * TWO_PI) + sin(y * TWO_PI) + sin(z * TWO_PI)) * AMPLITUDE;
+		x += increment1;
+		y += increment2;
+		z += increment3;
+	}
+}
+
+void rawGenerator::in(Tone a, Tone b)
+{
+	double x = 0, y = 0, z = 0;
+	const double increment1 = (a.getFrequency() / SAMPLE_RATE);
+	const double increment2 = (b.getFrequency() / SAMPLE_RATE);
+
+	cout << "Creating a mix of: " << a.getFrequency() << " + " << b.getFrequency() << endl;
+	cout << "Creating a mix of: " << increment1 << " + " << increment2 << endl;
+	cout << "Samples:     " << SAMPLES << endl;
+	cout << "Sample rate: " << SAMPLE_RATE << endl;
+
+	for (unsigned i = 0; i < SAMPLES; i++)
+	{
+		waveOut2[i] = (sin(x * TWO_PI) + sin(y * TWO_PI)) * AMPLITUDE;
+		x += increment1;
+		y += increment2;
+	}
+}
+
+void rawGenerator::in(Tone a)
+{
+	double x = 0, y = 0, z = 0;
+
+	const double increment1 = (a.getFrequency() / SAMPLE_RATE);
+
+	cout << "Creating a mix of: " << a.getFrequency() << endl;
+	cout << "Creating a mix of: " << increment1 << endl;
+	cout << "Samples:     " << SAMPLES << endl;
+	cout << "Sample rate: " << SAMPLE_RATE << endl;
+
+	for (unsigned i = 0; i < SAMPLES; i++)
+	{
+		waveOut2[i] = (sin(x * TWO_PI)) * AMPLITUDE;
+		x += increment1;
+	}
+}
 
 //Synthese
 int main() 
 {
 	//TODO: Fill in these keys 1-88
 	Tone key[88];
-	key[1].set("A0", 27.5000);
-	key[2].set("As0", 29.1352);
-	key[3].set("B0", 30.8677);
+	//These need to be recreated. start with the lowest note not CEG.
+	key[1].set("C", 527.47);
+	key[2].set("E", 418.65);
+	key[3].set("G", 352.04);
 
 	//TODO: FILL IN CHORDS
 	Chord chord[17];
 	chord[1].set("test", key[1], key[2], key[3]);
 
-	const unsigned SAMPLES = 0.50 * 44100; //Zetten naar de kleinste kortste noot.
-	const unsigned SAMPLE_RATE = 44100;
-	const unsigned AMPLITUDE = 6000;
-
-	sf::Int16 raw1[SAMPLES];
-	sf::Int16 raw2[SAMPLES];
-	sf::Int16 raw3[SAMPLES];
-	sf::Int16 raw4[SAMPLES];
-
-	const double TWO_PI = 6.28318;
-	const double increment1 = 527.47 / SAMPLE_RATE;
-	const double increment2 = 418.65 / SAMPLE_RATE;
-	const double increment3 = 352.04 / SAMPLE_RATE;
-
-	double x = 0;
-	double y = 0;
-	double z = 0;
-	//8 of 16 maten van 4 tellen
-	//fourier synthese
-	for (unsigned i = 0; i < SAMPLES; i++)
-	{
-		raw1[i] = AMPLITUDE * sin(x*TWO_PI);
-		raw2[i] = AMPLITUDE * sin(y*TWO_PI);
-		raw3[i] = AMPLITUDE * sin(z*TWO_PI);
-		raw4[i] = raw1[i] + raw2[i] + raw3[i];
-		x += increment1;
-		y += increment2;
-		z += increment3;
-	}
-	sf::SoundBuffer Buffer;
-	sf::Sound Sound;
-	int i = 0;
-	while (1)
-	{
-
-		if (i == 0){
-			if (!Buffer.loadFromSamples(raw4, SAMPLES, 1, SAMPLE_RATE)) {
-				std::cerr << "Loading failed!" << std::endl;
-				//return 1;
-			}
-			std::cout << "Sound 1" << std::endl;
-			Sound.setPitch(1);
-			i = 1;
-		}
-		else
-		{
-			if (!Buffer.loadFromSamples(raw2, SAMPLES, 1, SAMPLE_RATE)) {
-				std::cerr << "Loading failed!" << std::endl;
-				//return 1;
-			}
-			std::cout << "Sound 2" << std::endl;
-			Sound.setPitch(1.2);
-			i = 0;
-		}
-
-		Sound.setBuffer(Buffer);
-		//Sound.setLoop(true);
-		Sound.play();
-		sf::sleep(sf::milliseconds(500));
-		Sound.stop();
-	}
-	return 0;
+	rawGenerator r;
+	r.in(key[1], key[2], key[3]);
+	r.playStream();
+	r.in(key[1], key[3]);
+	r.playStream();
+	r.in(key[1], key[2]);
+	r.playStream();
+	r.in(key[1]);
+	r.playStream();
+	double x = 0, y = 0, z = 0;
+	system("pause");
+	return 1;
 }

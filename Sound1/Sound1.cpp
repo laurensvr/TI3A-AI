@@ -7,7 +7,7 @@
 //Synthese
 int main() {
 
-	const unsigned SAMPLES = 2*44100; //
+	const unsigned SAMPLES = 0.5 * 44100; //Zetten naar de kleinste kortste noot.
 	const unsigned SAMPLE_RATE = 44100;
 	const unsigned AMPLITUDE = 8000;
 
@@ -26,7 +26,7 @@ int main() {
 	double z = 0;
 	//8 of 16 maten van 4 tellen
 	//fourier synthese
-	for (unsigned i = 0; i < SAMPLES; i++) 
+	for (unsigned i = 0; i < SAMPLES; i++)
 	{
 		raw1[i] = AMPLITUDE * sin(x*TWO_PI);
 		raw2[i] = AMPLITUDE * sin(y*TWO_PI);
@@ -36,21 +36,33 @@ int main() {
 		y += increment2;
 		z += increment3;
 	}
-
 	sf::SoundBuffer Buffer;
-	if (!Buffer.loadFromSamples(raw4, SAMPLES, 1, SAMPLE_RATE)) {
-		std::cerr << "Loading failed!" << std::endl;
-		//return 1;
+	sf::Sound Sound;
+	int i = 0;
+	while (1){
+		if (i == 0){
+			if (!Buffer.loadFromSamples(raw4, SAMPLES, 1, SAMPLE_RATE)) {
+				std::cerr << "Loading failed!" << std::endl;
+				//return 1;
+			}
+			std::cout << "Sound 1" << std::endl;
+			i = 1;
+		}
+		else {
+			if (!Buffer.loadFromSamples(raw1, SAMPLES, 1, SAMPLE_RATE)) {
+				std::cerr << "Loading failed!" << std::endl;
+				//return 1;
+			}
+			std::cout << "Sound 2" << std::endl;
+			i = 0;
+		}
+		Sound.setBuffer(Buffer);
+		//Sound.setLoop(true);
+		Sound.play();
+		sf::sleep(sf::milliseconds(500));
+		Sound.stop();
 	}
 
-	sf::Sound Sound;
-	Sound.setBuffer(Buffer);
-	//Sound.setLoop(true);
-	Sound.play();
-	std::cout << "Sound." << std::endl;
-	while (1) {
-		sf::sleep(sf::milliseconds(100));
-	}
 
 	return 0;
 }

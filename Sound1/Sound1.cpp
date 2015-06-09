@@ -6,27 +6,50 @@
 
 using namespace std;
 
-class Tone {
+class Tone 
+{
 public:
 	double frequency;
 	std::string name;
-	void set(double a, std::string b)
+	void set(std::string a, double b)
 	{
-		frequency = a;
-		name = b;
+		name = a;
+		frequency = b;
+	}
+};
+
+class Chord 
+{
+public:
+	std::string name;
+	Tone tone1;
+	Tone tone2;
+	Tone tone3;
+	Tone tone4;
+	void set(std::string a, Tone b, Tone c, Tone d)
+	{
+		name = a;
+		tone1 = b;
+		tone2 = c;
+		tone3 = d;
 	}
 };
 
 
 //Synthese
-int main() {
-	
+int main() 
+{
 	//TODO: Fill in these keys 1-88
 	Tone key[88];
-	key[1].set(27.5000, "A0");
-	key[2].set(29.1352, "As0");
-	
-	const unsigned SAMPLES = 0.25 * 44100; //Zetten naar de kleinste kortste noot.
+	key[1].set("A0", 27.5000);
+	key[2].set("As0", 29.1352);
+	key[3].set("B0", 30.8677);
+
+	//TODO: FILL IN CHORDS
+	Chord chord[17];
+	chord[1].set("test", key[1], key[2], key[3]);
+
+	const unsigned SAMPLES = 0.50 * 44100; //Zetten naar de kleinste kortste noot.
 	const unsigned SAMPLE_RATE = 44100;
 	const unsigned AMPLITUDE = 6000;
 
@@ -58,8 +81,9 @@ int main() {
 	sf::SoundBuffer Buffer;
 	sf::Sound Sound;
 	int i = 0;
-	while (1){
-		
+	while (1)
+	{
+
 		if (i == 0){
 			if (!Buffer.loadFromSamples(raw4, SAMPLES, 1, SAMPLE_RATE)) {
 				std::cerr << "Loading failed!" << std::endl;
@@ -69,7 +93,8 @@ int main() {
 			Sound.setPitch(1);
 			i = 1;
 		}
-		else {
+		else
+		{
 			if (!Buffer.loadFromSamples(raw2, SAMPLES, 1, SAMPLE_RATE)) {
 				std::cerr << "Loading failed!" << std::endl;
 				//return 1;
@@ -85,7 +110,5 @@ int main() {
 		sf::sleep(sf::milliseconds(500));
 		Sound.stop();
 	}
-
-
 	return 0;
 }

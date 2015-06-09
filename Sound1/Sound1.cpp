@@ -4,12 +4,30 @@
 #include <iostream>
 #include <SFML/System.hpp>
 
+using namespace std;
+
+class Tone {
+	double frequency;
+	std::string name;
+	int number;
+public:
+	Tone(double, std::string, int);
+	double freq() { return frequency; }
+}
+
+Tone::Tone(double a, std::string b, int c)
+{
+	frequency = a;
+	name = b;
+	number = c;
+}
+
 //Synthese
 int main() {
 
-	const unsigned SAMPLES = 0.5 * 44100; //Zetten naar de kleinste kortste noot.
+	const unsigned SAMPLES = 0.25 * 44100; //Zetten naar de kleinste kortste noot.
 	const unsigned SAMPLE_RATE = 44100;
-	const unsigned AMPLITUDE = 8000;
+	const unsigned AMPLITUDE = 6000;
 
 	sf::Int16 raw1[SAMPLES];
 	sf::Int16 raw2[SAMPLES];
@@ -40,22 +58,26 @@ int main() {
 	sf::Sound Sound;
 	int i = 0;
 	while (1){
+		
 		if (i == 0){
 			if (!Buffer.loadFromSamples(raw4, SAMPLES, 1, SAMPLE_RATE)) {
 				std::cerr << "Loading failed!" << std::endl;
 				//return 1;
 			}
 			std::cout << "Sound 1" << std::endl;
+			Sound.setPitch(1);
 			i = 1;
 		}
 		else {
-			if (!Buffer.loadFromSamples(raw1, SAMPLES, 1, SAMPLE_RATE)) {
+			if (!Buffer.loadFromSamples(raw2, SAMPLES, 1, SAMPLE_RATE)) {
 				std::cerr << "Loading failed!" << std::endl;
 				//return 1;
 			}
 			std::cout << "Sound 2" << std::endl;
+			Sound.setPitch(1.2);
 			i = 0;
 		}
+
 		Sound.setBuffer(Buffer);
 		//Sound.setLoop(true);
 		Sound.play();

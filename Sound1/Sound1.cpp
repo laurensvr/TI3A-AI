@@ -7,23 +7,25 @@
 using namespace std;
 
 class Tone {
+public:
 	double frequency;
 	std::string name;
-	int number;
-public:
-	Tone(double, std::string, int);
-	double freq() { return frequency; }
-}
+	int number;	
+	void set(double a, std::string b, int c)
+	{
+		frequency = a;
+		name = b;
+		number = c;
+	}
+};
 
-Tone::Tone(double a, std::string b, int c)
-{
-	frequency = a;
-	name = b;
-	number = c;
-}
 
 //Synthese
 int main() {
+	
+	//TODO: Fill in these keys 1-88
+	Tone key[84];
+	key[1].set(27.5000, "A0", 0);
 
 	const unsigned SAMPLES = 0.25 * 44100; //Zetten naar de kleinste kortste noot.
 	const unsigned SAMPLE_RATE = 44100;

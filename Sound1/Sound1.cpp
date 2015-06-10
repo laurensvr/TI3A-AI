@@ -209,24 +209,24 @@ int main()
 
 	//TODO: complete chords
 	Chord chord[18];
-	chord[1].set("C", key[40], key[44], key[47]);
-	chord[2].set("C#", key[41], key[45], key[36]);
-	chord[3].set("Db", key[29], key[33], key[36]);
-	chord[4].set("D", key[42], key[46], key[49]);
-	chord[5].set("D#", key[31], key[35], key[37]);
-	chord[6].set("Eb", key[1], key[2], key[3]);
-	chord[7].set("E", key[1], key[2], key[3]);
-	chord[8].set("F", key[1], key[2], key[3]);
-	chord[9].set("F#", key[1], key[2], key[3]);
-	chord[10].set("Gb", key[1], key[2], key[3]);
-	chord[11].set("G", key[1], key[2], key[3]);
-	chord[12].set("G#", key[1], key[2], key[3]);
-	chord[13].set("Ab", key[1], key[2], key[3]);
-	chord[14].set("A", key[1], key[2], key[3]);
-	chord[15].set("A#", key[1], key[2], key[3]);
-	chord[16].set("Bb", key[1], key[2], key[3]);
-	chord[17].set("B", key[1], key[2], key[3]);
-
+	chord[1].set("C chord", key[40], key[44], key[47]);
+	chord[2].set("C# chord", key[41], key[45], key[36]);
+	chord[3].set("Db chord", key[29], key[33], key[36]);
+	chord[4].set("D chord", key[42], key[46], key[49]);
+	chord[5].set("D# chord", key[31], key[35], key[37]);
+	chord[6].set("Eb chord", key[31], key[35], key[37]);
+	chord[7].set("E chord", key[32], key[36], key[39]);
+	chord[8].set("F chord", key[33], key[37], key[40]);
+	chord[9].set("F# chord", key[34], key[38], key[41]);
+	chord[10].set("Gb chord", key[34], key[38], key[41]);
+	chord[11].set("G chord", key[35], key[39], key[42]);
+	chord[12].set("G# chord", key[36], key[40], key[43]);
+	chord[13].set("Ab chord", key[36], key[40], key[43]);
+	chord[14].set("A chord", key[37], key[41], key[44]);
+	chord[15].set("A# chord", key[38], key[42], key[45]);
+	chord[16].set("Bb chord", key[38], key[42], key[45]);
+	chord[17].set("B chord", key[39], key[43], key[46]);
+	
 	rawGenerator r;
 
 	for (int i = 1; i < 18; i++){

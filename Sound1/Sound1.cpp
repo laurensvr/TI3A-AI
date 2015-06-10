@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class Tone 
+class Tone
 {
 public:
 	double frequency;
@@ -21,7 +21,7 @@ public:
 	}
 };
 
-class Chord 
+class Chord
 {
 public:
 	std::string name;
@@ -47,19 +47,22 @@ private:
 	const double TWO_PI = 6.28318;
 public:
 	int sw = 0;
-	sf::Int16 waveOut1[44100/2];
+	sf::Int16 waveOut1[44100 / 2];
 	sf::Int16 waveOut2[44100 / 2];
 
 	void in(Tone, Tone, Tone);
 	void in(Tone, Tone);
 	void in(Tone);
 	void in(Chord, Tone);
+	void in(Chord);
 	void playStream();
 };
+
 void rawGenerator::playStream()
 {
 	sf::SoundBuffer Buffer;
 	sf::Sound Sound;
+
 
 	if (sw == 0){
 		if (!Buffer.loadFromSamples(waveOut1, 0.50 * 44100, 1, 44100)) {
@@ -67,7 +70,7 @@ void rawGenerator::playStream()
 			//return 1;
 		}
 		std::cout << "Sound 1" << std::endl;
-		sw = 1;
+		sw = 0;
 	}
 	else
 	{
@@ -83,7 +86,7 @@ void rawGenerator::playStream()
 	//Sound.setLoop(true);
 	Sound.play();
 	sf::sleep(sf::milliseconds(500));
-	Sound.stop();
+
 
 }
 void rawGenerator::in(Tone a, Tone b, Tone c)
@@ -144,30 +147,66 @@ void rawGenerator::in(Tone a)
 	}
 }
 
-//Synthese
-int main() 
+void rawGenerator::in(Chord a)
 {
-	//TODO: Fill in these keys 1-88
-	Tone key[88];
-	//These need to be recreated. start with the lowest note not CEG.
-	key[1].set("C", 527.47);
-	key[2].set("E", 418.65);
-	key[3].set("G", 352.04);
+	double x = 0, y = 0, z = 0;
 
-	//TODO: FILL IN CHORDS
-	Chord chord[17];
-	chord[1].set("test", key[1], key[2], key[3]);
+	const double increment1 = (a.tone1.getFrequency() / SAMPLE_RATE);
+	const double increment2 = (a.tone2.getFrequency() / SAMPLE_RATE);
+	const double increment3 = (a.tone3.getFrequency() / SAMPLE_RATE);
+
+	cout << "Creating a mix of: " << a.name << endl;
+	cout << "Creating a mix of: " << increment1 << " + " << increment2 << " + " << increment3 << endl;
+	cout << "Samples:     " << SAMPLES << endl;
+	cout << "Sample rate: " << SAMPLE_RATE << endl;
+
+	for (unsigned i = 0; i < SAMPLES; i++)
+	{
+		waveOut1[i] = (sin(x * TWO_PI)) * AMPLITUDE;
+		x += increment1;
+	}
+}
+
+//Synthese
+int main()
+{
+
+	Tone key[89];
+	double e = 1;
+	for (int i = 0; i<=88; i = i + 1){
+
+		double k = (e - 49) / 12;
+		double var = pow(2.0, k) * 440;
+		key[i].set("1", var);
+		e = e + 1;
+	}
+
+	//TODO: complete chords
+	Chord chord[18];
+	chord[1].set("C", key[40], key[44], key[47]);
+	chord[2].set("C#", key[41], key[45], key[36]);
+	chord[3].set("Db", key[29], key[33], key[36]);
+	chord[4].set("D", key[42], key[46], key[49]);
+	chord[5].set("D#", key[31], key[35], key[37]);
+	chord[6].set("Eb", key[1], key[2], key[3]);
+	chord[7].set("E", key[1], key[2], key[3]);
+	chord[8].set("F", key[1], key[2], key[3]);
+	chord[9].set("F#", key[1], key[2], key[3]);
+	chord[10].set("Gb", key[1], key[2], key[3]);
+	chord[11].set("G", key[1], key[2], key[3]);
+	chord[12].set("G#", key[1], key[2], key[3]);
+	chord[13].set("Ab", key[1], key[2], key[3]);
+	chord[14].set("A", key[1], key[2], key[3]);
+	chord[15].set("A#", key[1], key[2], key[3]);
+	chord[16].set("Bb", key[1], key[2], key[3]);
+	chord[17].set("B", key[1], key[2], key[3]);
 
 	rawGenerator r;
-	r.in(key[1], key[2], key[3]);
-	r.playStream();
-	r.in(key[1], key[3]);
-	r.playStream();
-	r.in(key[1], key[2]);
-	r.playStream();
-	r.in(key[1]);
-	r.playStream();
-	double x = 0, y = 0, z = 0;
+
+	for (int i = 1; i < 18; i++){
+		r.in(chord[i]);
+		r.playStream();
+	}
 	system("pause");
 	return 1;
 }

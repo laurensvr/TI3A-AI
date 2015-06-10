@@ -63,18 +63,19 @@ int main()
 	chord[3].set("Db chord", key[29], key[33], key[36]);
 	chord[4].set("D chord", key[42], key[46], key[49]);
 	chord[5].set("D# chord", key[31], key[35], key[37]);
-	chord[6].set("Eb chord", key[1], key[2], key[3]);
-	chord[7].set("E chord", key[1], key[2], key[3]);
-	chord[8].set("F chord", key[1], key[2], key[3]);
-	chord[9].set("F# chord", key[1], key[2], key[3]);
-	chord[10].set("Gb chord", key[1], key[2], key[3]);
-	chord[11].set("G chord", key[1], key[2], key[3]);
-	chord[12].set("G# chord", key[1], key[2], key[3]);
-	chord[13].set("Ab chord", key[1], key[2], key[3]);
-	chord[14].set("A chord", key[1], key[2], key[3]);
-	chord[15].set("A# chord", key[1], key[2], key[3]);
-	chord[16].set("Bb chord", key[1], key[2], key[3]);
-	chord[17].set("B chord", key[1], key[2], key[3]);
+	chord[6].set("Eb chord", key[31], key[35], key[37]);
+	chord[7].set("E chord", key[32], key[36], key[39]);
+	chord[8].set("F chord", key[33], key[37], key[40]);
+	chord[9].set("F# chord", key[34], key[38], key[41]);
+	chord[10].set("Gb chord", key[34], key[38], key[41]);
+	chord[11].set("G chord", key[35], key[39], key[42]);
+	chord[12].set("G# chord", key[36], key[40], key[43]);
+	chord[13].set("Ab chord", key[36], key[40], key[43]);
+	chord[14].set("A chord", key[37], key[41], key[44]);
+	chord[15].set("A# chord", key[38], key[42], key[45]);
+	chord[16].set("Bb chord", key[38], key[42], key[45]);
+	chord[17].set("B chord", key[39], key[43], key[46]);
+
 
 
 	const unsigned SAMPLES = 0.50 * 44100; //Zetten naar de kleinste kortste noot.

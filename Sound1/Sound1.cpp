@@ -162,8 +162,34 @@ void rawGenerator::in(Chord a)
 
 	for (unsigned i = 0; i < SAMPLES; i++)
 	{
-		waveOut1[i] = (sin(x * TWO_PI)) * AMPLITUDE;
+		waveOut1[i] = (sin(x * TWO_PI) + sin(y * TWO_PI) + sin(z * TWO_PI)) * AMPLITUDE;
 		x += increment1;
+		y += increment2;
+		z += increment3;
+	}
+}
+
+void rawGenerator::in(Chord a, Tone b)
+{
+	double x = 0, y = 0, z = 0, w = 0;
+	const double increment1 = (a.tone1.getFrequency() / SAMPLE_RATE);
+	const double increment2 = (a.tone2.getFrequency() / SAMPLE_RATE);
+	const double increment3 = (a.tone3.getFrequency() / SAMPLE_RATE);
+	const double increment4 = (b.getFrequency() / SAMPLE_RATE);
+
+	cout << "Creating a mix of: " << a.name << endl;
+	cout << "Creating a mix of: " << increment1 << " + " << increment2 << " + " << increment3 << endl;
+	cout << "Samples:     " << SAMPLES << endl;
+	cout << "Sample rate: " << SAMPLE_RATE << endl;
+
+	for (unsigned i = 0; i < SAMPLES; i++)
+	{
+
+		waveOut1[i] = (sin(x * TWO_PI) + sin(y * TWO_PI) + sin(z * TWO_PI) + sin(w * TWO_PI)) * AMPLITUDE;
+		x += increment1;
+		y += increment2;
+		z += increment3;
+		w += increment4;
 	}
 }
 
@@ -204,7 +230,7 @@ int main()
 	rawGenerator r;
 
 	for (int i = 1; i < 18; i++){
-		r.in(chord[i]);
+		r.in(chord[i], key[rand() % 88]);
 		r.playStream();
 	}
 	system("pause");

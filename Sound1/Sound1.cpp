@@ -40,16 +40,15 @@ public:
 
 class rawGenerator
 {
-private:
-	const unsigned SAMPLES = 0.50 * 44100; //Zetten naar de kleinste kortste noot.
-	const unsigned SAMPLE_RATE = 44100;
-	const unsigned AMPLITUDE = 6000;
-	const double TWO_PI = 6.28318;
 public:
+	unsigned SAMPLES = 0.25 * 44100; //Zetten naar de kleinste kortste noot.
+	unsigned SAMPLE_RATE = 44100;
+	unsigned AMPLITUDE = 6000;
+	double TWO_PI = 6.28318;
 	int sw = 0;
-	sf::Int16 waveOut1[44100 / 2];
-	sf::Int16 waveOut2[44100 / 2];
-
+	sf::Int16 waveOut1[44100 / 4];
+	sf::Int16 waveOut2[44100 / 4];
+	rawGenerator();
 	void in(Tone, Tone, Tone);
 	void in(Tone, Tone);
 	void in(Tone);
@@ -58,11 +57,14 @@ public:
 	void playStream();
 };
 
+rawGenerator::rawGenerator(){
+
+};
+
 void rawGenerator::playStream()
 {
 	sf::SoundBuffer Buffer;
 	sf::Sound Sound;
-
 
 	if (sw == 0){
 		if (!Buffer.loadFromSamples(waveOut1, 0.50 * 44100, 1, 44100)) {
@@ -72,6 +74,7 @@ void rawGenerator::playStream()
 		std::cout << "Sound 1" << std::endl;
 		sw = 0;
 	}
+	/*
 	else
 	{
 		if (!Buffer.loadFromSamples(waveOut2, 0.50 * 44100, 1, 44100)) {
@@ -81,14 +84,14 @@ void rawGenerator::playStream()
 		std::cout << "Sound 2" << std::endl;
 		sw = 0;
 	}
-
+	*/
 	Sound.setBuffer(Buffer);
 	//Sound.setLoop(true);
 	Sound.play();
-	sf::sleep(sf::milliseconds(500));
-
-
+	sf::sleep(sf::milliseconds(250));
+	Sound.stop();
 }
+
 void rawGenerator::in(Tone a, Tone b, Tone c)
 {
 	double x = 0, y = 0, z = 0;
@@ -142,7 +145,7 @@ void rawGenerator::in(Tone a)
 
 	for (unsigned i = 0; i < SAMPLES; i++)
 	{
-		waveOut2[i] = (sin(x * TWO_PI)) * AMPLITUDE;
+		waveOut1[i] = (sin(x * TWO_PI)) * AMPLITUDE;
 		x += increment1;
 	}
 }
@@ -184,7 +187,6 @@ void rawGenerator::in(Chord a, Tone b)
 
 	for (unsigned i = 0; i < SAMPLES; i++)
 	{
-
 		waveOut1[i] = (sin(x * TWO_PI) + sin(y * TWO_PI) + sin(z * TWO_PI) + sin(w * TWO_PI)) * AMPLITUDE;
 		x += increment1;
 		y += increment2;
@@ -226,12 +228,18 @@ int main()
 	chord[15].set("A# chord", key[38], key[42], key[45]);
 	chord[16].set("Bb chord", key[38], key[42], key[45]);
 	chord[17].set("B chord", key[39], key[43], key[46]);
-	
-	rawGenerator r;
 
+	rawGenerator r;
+	int rduration;
+	int rchord;
 	for (int i = 1; i < 18; i++){
-		r.in(chord[i], key[rand() % 88]);
-		r.playStream();
+		rduration = (rand() % 3) + 1;
+		rchord = (rand() % 17) + 1;
+		for (int i = 0; i < rduration; i++){
+			r.in(chord[rchord]);
+			//r.in(chord[rchord], key[(rand() % 88) + 1]);
+			r.playStream();
+		}
 	}
 	system("pause");
 	return 1;

@@ -50,6 +50,8 @@ public:
 	unsigned SAMPLE_RATE = 44100;
 	unsigned AMPLITUDE = 6000;
 	double TWO_PI = 6.28318;
+	sf::SoundBuffer Buffer;
+	sf::Sound Sound;
 	int sw = 0;
 	sf::Int16 waveOut1[44100 / 4];
 	sf::Int16 waveOut2[44100 / 4];
@@ -68,9 +70,6 @@ rawGenerator::rawGenerator(){
 
 void rawGenerator::playStream()
 {
-	sf::SoundBuffer Buffer;
-	sf::Sound Sound;
-
 	if (sw == 0){
 		if (!Buffer.loadFromSamples(waveOut1, 0.25 * 44100, 1, 44100)) {
 			std::cerr << "Loading failed!" << std::endl;
@@ -94,8 +93,8 @@ void rawGenerator::playStream()
 	//Sound.setLoop(true);
 	Sound.play();
 	beat++;
-	sf::sleep(sf::milliseconds(250));
-	Sound.stop();
+	//sf::sleep(sf::milliseconds(250));
+	
 }
 
 void rawGenerator::in(Tone a, Tone b, Tone c)
@@ -264,18 +263,28 @@ int main()
 	int rDuration = 0;
 	int rChord = 0;
 	int rOctave = 0;
-	for (int i = 1; i < 18; i++)
-	{
-		rDuration = rand() % 3 + 1;
-		rChord = rand() % 50 + 1;
-		r.in(chord[rChord]);
-		//r.in(chord[rchord], key[(rand() % 88) + 1]);
 
-		for (int x = 0; x < rDuration; x++)
+	sf::Clock Clock;
+	sf::Time time;
+	while (1)
+	{
+		time = Clock.getElapsedTime();
+
+		if (time.asMicroseconds() >= 250000)
 		{
+			rDuration = rand() % 3 + 1;
+			rChord = rand() % 50 + 1;
+			//r.in(chord[rChord]);
+			//r.in(chord[rChord], key[(rand() % 88) + 1]);
+			r.in(key[(rand() % 88) + 1], key[(rand() % 88) + 1], key[(rand() % 88) + 1]);
 			r.playStream();
+			Clock.restart();
+
 		}
+
+
 	}
+
 	system("pause");
 	return 1;
 }

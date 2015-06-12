@@ -260,8 +260,10 @@ int main()
 	chord[50].set("B chord", key[39 + 12], key[43 + 12], key[46 + 12]);
 	
 	rawGenerator r;
-	int rDuration = 0;
-	int rChord = 0;
+	int rChordDuration = rand() % 3 + 1;
+	int rToneDuration = rand() % 3 + 1;
+	int rChord = rand() % 50 + 1;
+	int rTone = rand() % 88 + 1;
 	int rOctave = 0;
 
 	sf::Clock Clock;
@@ -269,17 +271,28 @@ int main()
 	while (1)
 	{
 		time = Clock.getElapsedTime();
-
 		if (time.asMicroseconds() >= 250000)
 		{
-			rDuration = rand() % 3 + 1;
-			rChord = rand() % 50 + 1;
-			//r.in(chord[rChord]);
-			//r.in(chord[rChord], key[(rand() % 88) + 1]);
-			r.in(key[(rand() % 88) + 1], key[(rand() % 88) + 1], key[(rand() % 88) + 1]);
+			if (rChordDuration <= 0)
+			{
+				rChord = rand() % 50 + 1;
+				rChordDuration = rand() % 3 + 1;
+			}
+			if (rToneDuration <= 0)
+			{
+				rTone = rand() % 10 + 41;
+				rToneDuration = rand() % 3 + 1;
+			}
+
+			//r.in(chord[rChord]); //Play a random Chord with a random duration
+			r.in(chord[rChord], key[rTone]); //Play a random Chord + a random Tone both with a random duration
+			//r.in(key[(rand() % 88) + 1], key[(rand() % 88) + 1], key[(rand() % 88) + 1]); //Play three random keys changes every single beat.
 			r.playStream();
+
 			Clock.restart();
 
+			rChordDuration--;
+			rToneDuration--;
 		}
 
 

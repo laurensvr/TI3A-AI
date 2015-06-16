@@ -1,28 +1,10 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# Ignore everything
+*
 
-# Precompiled Headers
-*.gch
-*.pch
+# But not these files...
+!.gitignore
+!Sound1.cpp
+# etc...
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+# ...even if they are in subdirectories
+!*/

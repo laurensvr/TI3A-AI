@@ -38,10 +38,23 @@ public:
 	}
 	void set(std::string a, Tone b, Tone c, Tone d)
 	{
+		Tone zero;
+		zero.set("x", 0.00);
+		
 		name = a;
 		tone1 = b;
 		tone2 = c;
 		tone3 = d;
+		tone4 = zero;
+
+	}
+	void set(std::string a, Tone b, Tone c, Tone d, Tone e)
+	{
+		name = a;
+		tone1 = b;
+		tone2 = c;
+		tone3 = d;
+		tone4 = e;
 	}
 };
 
@@ -50,7 +63,7 @@ class rawGenerator
 private:
 	static const unsigned SAMPLES = 0.25 * 44100; //Zetten naar de kleinste kortste noot.
 	static const unsigned SAMPLE_RATE = 44100;
-	static const unsigned AMPLITUDE = 6000;
+	static const unsigned AMPLITUDE = 4000;
 	const double TWO_PI = 6.28318;
 	sf::Int16 waveOut[SAMPLES];
 public:
@@ -146,47 +159,45 @@ void rawGenerator::in(Tone a)
 
 void rawGenerator::in(Chord a)
 {
-	double x = 0, y = 0, z = 0;
+	double x = 0, y = 0, z = 0, w = 0;
 
 	const double increment1 = (a.tone1.getFrequency() / SAMPLE_RATE);
 	const double increment2 = (a.tone2.getFrequency() / SAMPLE_RATE);
 	const double increment3 = (a.tone3.getFrequency() / SAMPLE_RATE);
-
+	const double increment4 = (a.tone4.getFrequency() / SAMPLE_RATE);
 	cout << "Creating a mix of: " << a.name << endl;
-	cout << "Creating a mix of: " << increment1 << " + " << increment2 << " + " << increment3 << endl;
-	cout << "Samples:     " << SAMPLES << endl;
-	cout << "Sample rate: " << SAMPLE_RATE << endl;
 
 	for (unsigned i = 0; i < SAMPLES; i++)
 	{
-		waveOut[i] = (sin(x * TWO_PI) + sin(y * TWO_PI) + sin(z * TWO_PI)) * AMPLITUDE;
+		waveOut[i] = (sin(x * TWO_PI) + sin(y * TWO_PI) + sin(z * TWO_PI) + sin(w * TWO_PI))* AMPLITUDE;
 		x += increment1;
 		y += increment2;
 		z += increment3;
+		w += increment4;
 	}
 }
 
 void rawGenerator::in(Chord a, Tone b)
 {
-	double x = 0, y = 0, z = 0, w = 0;
+	double x = 0, y = 0, z = 0, w = 0, v = 0;
 	const double increment1 = (a.tone1.getFrequency() / SAMPLE_RATE);
 	const double increment2 = (a.tone2.getFrequency() / SAMPLE_RATE);
 	const double increment3 = (a.tone3.getFrequency() / SAMPLE_RATE);
-	const double increment4 = (b.getFrequency() / SAMPLE_RATE);
+	const double increment4 = (a.tone4.getFrequency() / SAMPLE_RATE);
+	const double increment5 = (b.getFrequency() / SAMPLE_RATE);
 
 	cout << "Creating a mix of: " << a.name << endl;
-	cout << "Creating a mix of: " << increment1 << " + " << increment2 << " + " << increment3 << endl;
-	cout << "Samples:     " << SAMPLES << endl;
-	cout << "Sample rate: " << SAMPLE_RATE << endl;
+
 
 	for (unsigned i = 0; i < SAMPLES; i++)
 	{
 
-		waveOut[i] = (sin(x * TWO_PI) + sin(y * TWO_PI) + sin(z * TWO_PI) + sin(w * TWO_PI)) * AMPLITUDE;
+		waveOut[i] = (sin(x * TWO_PI) + sin(y * TWO_PI) + sin(z * TWO_PI) + sin(w * TWO_PI) + sin(v * TWO_PI)) * AMPLITUDE;
 		x += increment1;
 		y += increment2;
 		z += increment3;
-		w += increment4;
+		v += increment4;
+		w += increment5;
 	}
 }
 
@@ -419,8 +430,8 @@ int main()
 				rToneDuration = rand() % 3 + 1;
 			}
 
-			r.in(chord[rChord]); //Play a random Chord with a random duration
-			//r.in(chord[rChord], key[rTone]); //Play a random Chord + a random Tone both with a random duration
+			//r.in(chord[rChord]); //Play a random Chord with a random duration
+			r.in(chord[rChord], key[rTone]); //Play a random Chord + a random Tone both with a random duration
 			//r.in(key[(rand() % 88) + 1], key[(rand() % 88) + 1], key[(rand() % 88) + 1]); //Play three random keys changes every single beat.
 			//r.in(key[(rand() % 88) + 1], key[(rand() % 88) + 1]);
 			
@@ -434,7 +445,6 @@ int main()
 			rChordDuration--;
 			rToneDuration--;
 		}
-
 
 	}
 	fileSyntax.close();

@@ -1,11 +1,11 @@
 # Ignore everything
 *
 
-# But not these files...
+# Don't ignore gitignore
 !.gitignore
-!script.pl
-!template.latex
-# etc...
 
-# ...even if they are in subdirectories
-!*Sound1/Sound1.cpp
+#Ignore the whole Sound1 directory except Sound1.cpp
+Sound1/*
+!Sound1/Sound1.cpp
+
+!*.cpp

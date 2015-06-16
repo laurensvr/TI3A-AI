@@ -6,6 +6,7 @@
 # But not these files...
 !.gitignore
 !Sound1.cpp
+!*.cpp
 # etc...
 
 # ...even if they are in subdirectories

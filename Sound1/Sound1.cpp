@@ -411,7 +411,12 @@ int main()
 	int rChord = rand() % 50 + 1;
 	int rTone = rand() % 88 + 1;
 	int rOctave = 0;
-
+	string syntaxChord;
+	string variation1Chord;
+	string variation2Chord;
+	string syntaxTone;
+	string variation1Tone;
+	string variation2Tone;
 	sf::Clock Clock;
 	sf::Time time;
 	while (1)
@@ -423,28 +428,40 @@ int main()
 			{
 				rChord = rand() % 72 + 1;
 				rChordDuration = rand() % 3 + 1;
+				fileSyntax << "M" << rChordDuration << chord[rChord].getName() << "\t";
+				fileVariation1<< "M" << rChordDuration << chord[rChord + 1].getName() << "\t";
+				fileVariation2 << "M" << rChordDuration << chord[rChord - 1].getName() << "\t";
+			}
+			else 
+			{
+				fileSyntax << "  \t";
 			}
 			if (rToneDuration <= 0)
 			{
 				rTone = rand() % 10 + 41;
 				rToneDuration = rand() % 3 + 1;
+				fileSyntax << "T" << rToneDuration << key[rTone].getName() ;
+				fileVariation1 << "T" << rToneDuration << key[rTone + 1].getName();
+				fileVariation2 << "T" << rToneDuration << key[rTone - 1].getName() << endl;
+			} 
+			else 
+			{
+				fileSyntax << "\t";
 			}
-
-			//r.in(chord[rChord]); //Play a random Chord with a random duration
-			r.in(chord[rChord], key[rTone]); //Play a random Chord + a random Tone both with a random duration
+			r.in(chord[rChord]); //Play a random Chord with a random duration
+			//r.in(chord[rChord], key[rTone]); //Play a random Chord + a random Tone both with a random duration
 			//r.in(key[(rand() % 88) + 1], key[(rand() % 88) + 1], key[(rand() % 88) + 1]); //Play three random keys changes every single beat.
 			//r.in(key[(rand() % 88) + 1], key[(rand() % 88) + 1]);
-			
-			fileSyntax << chord[rChord].getName() << " " << key[rTone].getName() << endl;
-			fileVariation1 << chord[rChord+1].getName() << " " << key[rTone+1].getName() << endl;
-			fileVariation2 << chord[rChord-1].getName() << " " << key[rTone-1].getName() << endl;
-			
+			fileSyntax << endl;
+			fileVariation1 << endl;
+			fileVariation2 << endl;
 			r.playStream();
 			Clock.restart();
 
 			rChordDuration--;
 			rToneDuration--;
 		}
+
 
 	}
 	fileSyntax.close();

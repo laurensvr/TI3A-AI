@@ -195,84 +195,83 @@ int main()
 {
 	Tone key[89];
 	double e = 1;
-	int hight = 0;
-	int Count = 0;
+	int height = 0;
+	int count = 0;
 	for (int i = 0; i <= 88; i = i + 1)
 	{
-		string Hight;
+		string rHeight;
 		double k = (e - 49) / 12;
 		double var = pow(2.0, k) * 440;
-		switch (Count){
-			case 0:
-			{
-				Hight = "A" + std::to_string(hight);
-				break;
-			}
-			case 1:
-			{
-				Hight = "A#" + std::to_string(hight);
-				break;
-			}
-			case 2:
-			{
-				Hight = "B" + std::to_string(hight);
-				break;
-			}
-			case 3:
-			{
-				Hight = "C" + std::to_string(hight);
-				break;
-			}
-			case 4:
-			{
-				Hight = "C#" + std::to_string(hight);
-				break;
-			}
-			case 5:
-			{
-				Hight = "D" + std::to_string(hight);
-				break;
-			}
-			case 6:
-			{
-				Hight = "D#" + std::to_string(hight);
-				break;
-			}
-			case 7:
-			{
-				Hight = "E" + std::to_string(hight);
-				break;
-			}
-			case 8:
-			{
-				Hight = "F" + std::to_string(hight);
-				break;
-			}
-			case 9:
-			{
-				Hight = "F#" + std::to_string(hight);
-				break;
-			}
-			case 10:
-			{
-				Hight = "G" + std::to_string(hight);
-				break;
-			}
-			case 11:
-			{
-				Hight = "G#" + std::to_string(hight);
-				break;
-			}
-		}
-		key[i].set(Hight, var);
-		e = e + 1;
-		Count++;
-		if (Count == 12)
+		switch (count){
+		case 0:
 		{
-			hight++;
-			Count = 0;
+			rHeight = "TA" + std::to_string(height);
+			break;
 		}
-		cout << "Hight: " << Hight << "+ count: " << i << endl;
+		case 1:
+		{
+			rHeight = "TA#" + std::to_string(height);
+			break;
+		}
+		case 2:
+		{
+			rHeight = "TB" + std::to_string(height);
+			break;
+		}
+		case 3:
+		{
+			rHeight = "TC" + std::to_string(height);
+			break;
+		}
+		case 4:
+		{
+			rHeight = "TC#" + std::to_string(height);
+			break;
+		}
+		case 5:
+		{
+			rHeight = "TD" + std::to_string(height);
+			break;
+		}
+		case 6:
+		{
+			rHeight = "TD#" + std::to_string(height);
+			break;
+		}
+		case 7:
+		{
+			rHeight = "TE" + std::to_string(height);
+			break;
+		}
+		case 8:
+		{
+			rHeight = "TF" + std::to_string(height);
+			break;
+		}
+		case 9:
+		{
+			rHeight = "TF#" + std::to_string(height);
+			break;
+		}
+		case 10:
+		{
+			rHeight = "TG" + std::to_string(height);
+			break;
+		}
+		case 11:
+		{
+			rHeight = "TG#" + std::to_string(height);
+			break;
+		}
+		}
+		key[i].set(rHeight, var);
+		e = e + 1;
+		count++;
+		if (count == 12)
+		{
+			height++;
+			count = 0;
+		}
 	}
 
 	//TODO: complete chords

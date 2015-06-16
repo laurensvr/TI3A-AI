@@ -193,15 +193,86 @@ void rawGenerator::in(Chord a, Tone b)
 //Synthese
 int main()
 {
-
 	Tone key[89];
 	double e = 1;
-	for (int i = 0; i <= 88; i = i + 1){
-
+	int hight = 0;
+	int Count = 0;
+	for (int i = 0; i <= 88; i = i + 1)
+	{
+		string Hight;
 		double k = (e - 49) / 12;
 		double var = pow(2.0, k) * 440;
-		key[i].set("1", var);
+		switch (Count){
+			case 0:
+			{
+				Hight = "A" + std::to_string(hight);
+				break;
+			}
+			case 1:
+			{
+				Hight = "A#" + std::to_string(hight);
+				break;
+			}
+			case 2:
+			{
+				Hight = "B" + std::to_string(hight);
+				break;
+			}
+			case 3:
+			{
+				Hight = "C" + std::to_string(hight);
+				break;
+			}
+			case 4:
+			{
+				Hight = "C#" + std::to_string(hight);
+				break;
+			}
+			case 5:
+			{
+				Hight = "D" + std::to_string(hight);
+				break;
+			}
+			case 6:
+			{
+				Hight = "D#" + std::to_string(hight);
+				break;
+			}
+			case 7:
+			{
+				Hight = "E" + std::to_string(hight);
+				break;
+			}
+			case 8:
+			{
+				Hight = "F" + std::to_string(hight);
+				break;
+			}
+			case 9:
+			{
+				Hight = "F#" + std::to_string(hight);
+				break;
+			}
+			case 10:
+			{
+				Hight = "G" + std::to_string(hight);
+				break;
+			}
+			case 11:
+			{
+				Hight = "G#" + std::to_string(hight);
+				break;
+			}
+		}
+		key[i].set(Hight, var);
 		e = e + 1;
+		Count++;
+		if (Count == 12)
+		{
+			hight++;
+			Count = 0;
+		}
+		cout << "Hight: " << Hight << "+ count: " << i << endl;
 	}
 
 	//TODO: complete chords

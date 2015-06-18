@@ -221,12 +221,6 @@ int main()
 	int rChord = rand() % 50 + 1;
 	int rTone = rand() % 88 + 1;
 	int rOctave = 0;
-	string syntaxChord;
-	string variation1Chord;
-	string variation2Chord;
-	string syntaxTone;
-	string variation1Tone;
-	string variation2Tone;
 	sf::Clock Clock;
 	sf::Time time;
 	while (1)

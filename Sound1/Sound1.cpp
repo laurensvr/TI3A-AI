@@ -220,8 +220,8 @@ int main()
 	int rToneDuration = rand() % 3 + 1;
 	int rChord = rand() % 50 + 1;
 	int rTone = rand() % 88 + 1;
-	int varRandChor = rand() %5 +1;
-	int varRandTone = rand() %5 +1;
+	int varRandChor = rand() %12 +1;
+	int varRandTone = rand() %12 +1;
 	sf::Clock Clock;
 	sf::Time time;
 	while (1)

@@ -240,7 +240,7 @@ int main()
 			{
 				fileVariation1 << "\t";
 				fileVariation2 << "\t";
-				fileSyntax << "  \t";
+				fileSyntax << "\t";
 			}
 			if (rToneDuration <= 0)
 			{

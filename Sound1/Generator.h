@@ -3,40 +3,60 @@
 class rawGenerator
 {
 private:
-	static const unsigned SAMPLES = 10 * 44100; //Zetten naar de kleinste kortste noot.
+	static const unsigned SAMPLES = 11 * 44100; //Zetten naar de kleinste kortste noot.
 	static const unsigned SAMPLE_RATE = 44100;
 	static const unsigned AMPLITUDE = 4000;
+	static const unsigned BEAT_LENGTH = 0.25 * 44100;
 	const double TWO_PI = 6.28318;
 	sf::Int16 waveOut[SAMPLES];
 public:
 	sf::SoundBuffer Buffer;
 	sf::Sound Sound;
-	int sw = 0;
+
+	void setBeats(int length);
+	unsigned int pointer = 0;
+	unsigned int amountOfBeats = 0;
 	void in(Tone, Tone, Tone);
 	void in(Tone, Tone);
 	void in(Tone);
 	void in(Chord, Tone);
 	void in(Chord);
+	void in2(Chord);
 	void playStream();
 };
 
+void rawGenerator::setBeats(int a)
+{
+	switch (a)
+	{
+	case 0:
+		amountOfBeats = 0;
+		break;
+	case 1:
+		amountOfBeats = 1;
+		break;
+	case 2:
+		amountOfBeats = 2;
+		break;
+	case 3:
+		amountOfBeats = 4;
+		break;
+	case 4:
+		amountOfBeats = 8;
+		break;
+	}
+};
 void rawGenerator::playStream()
 {
-	if (sw == 0){
-		if (!Buffer.loadFromSamples(waveOut, SAMPLES, 1, 44100)) {
-			std::cerr << "Loading failed!" << std::endl;
-			//return 1;
-		}
-		std::cout << "Sound 1" << std::endl;
-		sw = 0;
+
+	if (!Buffer.loadFromSamples(waveOut, SAMPLES, 1, SAMPLE_RATE)) {
+		std::cerr << "Loading failed!" << std::endl;
+		//return 1;
 	}
-
-
+	std::cout << "Sound 1" << std::endl;
 	Sound.setBuffer(Buffer);
 	//Sound.setLoop(true);
 	Sound.play();
-
-
 }
 
 void rawGenerator::in(Tone a, Tone b, Tone c)
@@ -109,6 +129,27 @@ void rawGenerator::in(Chord a)
 		z += increment3;
 		w += increment4;
 	}
+}
+
+void rawGenerator::in2(Chord a)
+{
+	double x = 0, y = 0, z = 0, w = 0;
+
+	const double increment1 = (a.tone1.getFrequency() / SAMPLE_RATE);
+	const double increment2 = (a.tone2.getFrequency() / SAMPLE_RATE);
+	const double increment3 = (a.tone3.getFrequency() / SAMPLE_RATE);
+	const double increment4 = (a.tone4.getFrequency() / SAMPLE_RATE);
+	cout << "Creating a mix of: " << a.name << endl;
+
+	for (unsigned i = pointer; i < (pointer +( BEAT_LENGTH * amountOfBeats)); i++)
+	{
+		waveOut[i] = (sin(x * TWO_PI) + sin(y * TWO_PI) + sin(z * TWO_PI) + sin(w * TWO_PI))* AMPLITUDE;
+		x += increment1;
+		y += increment2;
+		z += increment3;
+		w += increment4;
+	}
+	pointer += BEAT_LENGTH * amountOfBeats;
 }
 
 void rawGenerator::in(Chord a, Tone b)

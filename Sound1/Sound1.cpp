@@ -259,7 +259,7 @@ int main()
 				else
 					fileVariation1 << "T" << rToneDuration << key[rTone + 1].getName();
 				if (rChord + varRandChor < 0)
-					fileVariation2 << "T" << rToneDuration << key[rTone - 1].getName();
+					fileVariation2 << "T" << rToneDuration << key[0].getName();
 				else
 					fileVariation2 << "T" << rToneDuration << key[rTone - 1].getName();
 			}

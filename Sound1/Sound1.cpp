@@ -220,7 +220,8 @@ int main()
 	int rToneDuration = rand() % 3 + 1;
 	int rChord = rand() % 50 + 1;
 	int rTone = rand() % 88 + 1;
-	int rOctave = 0;
+	int varRandChor = rand() %5 +1;
+	int varRandTone = rand() %5 +1;
 	sf::Clock Clock;
 	sf::Time time;
 	while (1)
@@ -233,8 +234,14 @@ int main()
 				rChord = rand() % 72 + 1;
 				rChordDuration = rand() % 3 + 1;
 				fileSyntax << "M" << rChordDuration << chord[rChord].getName() << "\t";
-				fileVariation1 << "M" << rChordDuration << chord[rChord + 1].getName() << "\t";
-				fileVariation2 << "M" << rChordDuration << chord[rChord - 1].getName() << "\t";
+				if (rChord + varRandChor > 100)
+					fileVariation1 << "M" << rChordDuration << chord[100].getName() << "\t";
+				else
+				fileVariation1 << "M" << rChordDuration << chord[rChord + varRandChor].getName() << "\t";
+				if (rChord + varRandChor < 0)
+					fileVariation2 << "M" << rChordDuration << chord[0].getName() << "\t";
+				else
+				fileVariation2 << "M" << rChordDuration << chord[rChord - varRandChor].getName() << "\t";
 			}
 			else
 			{
@@ -247,8 +254,14 @@ int main()
 				rTone = rand() % 10 + 41;
 				rToneDuration = rand() % 3 + 1;
 				fileSyntax << "T" << rToneDuration << key[rTone].getName();
-				fileVariation1 << "T" << rToneDuration << key[rTone + 1].getName();
-				fileVariation2 << "T" << rToneDuration << key[rTone - 1].getName();
+				if (rChord + varRandChor > 100)
+					fileVariation1 << "T" << rToneDuration << key[100].getName();
+				else
+					fileVariation1 << "T" << rToneDuration << key[rTone + 1].getName();
+				if (rChord + varRandChor < 0)
+					fileVariation2 << "T" << rToneDuration << key[rTone - 1].getName();
+				else
+					fileVariation2 << "T" << rToneDuration << key[rTone - 1].getName();
 			}
 			else
 			{

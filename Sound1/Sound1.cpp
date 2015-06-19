@@ -238,6 +238,8 @@ int main()
 			}
 			else
 			{
+				fileVariation1 << "\t";
+				fileVariation2 << "\t";
 				fileSyntax << "  \t";
 			}
 			if (rToneDuration <= 0)
@@ -251,6 +253,8 @@ int main()
 			else
 			{
 				fileSyntax << "\t";
+				fileVariation1 << "\t";
+				fileVariation2 << "\t";
 			}
 			r.in(chord[rChord]); //Play a random Chord with a random duration
 			//r.in(chord[rChord], key[rTone]); //Play a random Chord + a random Tone both with a random duration

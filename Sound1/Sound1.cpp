@@ -218,10 +218,10 @@ int main()
 	fileVariation2.open("variation2.txt");
 	int rChordDuration = rand() % 3 + 1;
 	int rToneDuration = rand() % 3 + 1;
-	int rChord = rand() % 50 + 1;
-	int rTone = rand() % 88 + 1;
-	int varRandChor = rand() %12 +1;
-	int varRandTone = rand() %12 +1;
+	int rChord = rand() % 75 + 25;
+	int rTone = rand() % 68 + 20;
+	int varRandChor = rand() % 12 + 1;
+	int varRandTone = rand() % 12 + 1;
 	sf::Clock Clock;
 	sf::Time time;
 	while (1)
@@ -231,17 +231,17 @@ int main()
 		{
 			if (rChordDuration <= 0)
 			{
-				rChord = rand() % 72 + 1;
+				rChord = rand() % 75 + 25;
 				rChordDuration = rand() % 3 + 1;
 				fileSyntax << "M" << rChordDuration << chord[rChord].getName() << "\t";
 				if (rChord + varRandChor > 100)
 					fileVariation1 << "M" << rChordDuration << chord[100].getName() << "\t";
 				else
-				fileVariation1 << "M" << rChordDuration << chord[rChord + varRandChor].getName() << "\t";
-				if (rChord + varRandChor < 0)
-					fileVariation2 << "M" << rChordDuration << chord[0].getName() << "\t";
+					fileVariation1 << "M" << rChordDuration << chord[rChord + varRandChor].getName() << "\t";
+				if (rChord + varRandChor < 1)
+					fileVariation2 << "M" << rChordDuration << chord[1].getName() << "\t";
 				else
-				fileVariation2 << "M" << rChordDuration << chord[rChord - varRandChor].getName() << "\t";
+					fileVariation2 << "M" << rChordDuration << chord[rChord - varRandChor].getName() << "\t";
 			}
 			else
 			{
@@ -251,17 +251,17 @@ int main()
 			}
 			if (rToneDuration <= 0)
 			{
-				rTone = rand() % 10 + 41;
+				rTone = rand() % 68 + 20;
 				rToneDuration = rand() % 3 + 1;
 				fileSyntax << "T" << rToneDuration << key[rTone].getName();
-				if (rChord + varRandChor > 100)
-					fileVariation1 << "T" << rToneDuration << key[100].getName();
+				if (rChord + varRandChor > 89)
+					fileVariation1 << "T" << rToneDuration << key[89].getName();
 				else
-					fileVariation1 << "T" << rToneDuration << key[rTone + 1].getName();
-				if (rChord + varRandChor < 0)
-					fileVariation2 << "T" << rToneDuration << key[0].getName();
+					fileVariation1 << "T" << rToneDuration << key[rTone + varRandTone].getName();
+				if (rChord + varRandChor < 1)
+					fileVariation2 << "T" << rToneDuration << key[1].getName();
 				else
-					fileVariation2 << "T" << rToneDuration << key[rTone - 1].getName();
+					fileVariation2 << "T" << rToneDuration << key[rTone - varRandTone].getName();
 			}
 			else
 			{
